@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edunoxis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="homepage.css">
+</head>
+<body id="body">
+    <!-- Full Screen Glow Effect -->
+    <div class="glow-overlay">
+        <div class="glow"></div>
+    </div>
+
+    <!-- Glassmorphism Header -->
+    <nav>
+        <div class="logo"><a href="edumaster.html" style="text-decoration: none;">Em<sup>2</sup></a></div>
+        <div class="nav-links">
+            <a href="donate.html" class="nav-features">donate</a>
+            <a href="game.html" class="nav-pricing">game</a>
+            <a href="contact.html" class="nav-contact">contact</a>
+        </div>
+        <button class="setting-btn" id="settingsBtn">settings</button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-heading">Where students learn faster with smart tools!</h1>
+                <p>Smart tools designed to help students learn faster and retain knowledge longer through AI-powered technology.</p>
+                <a href="start.html" style="text-decoration: none;">
+                    <button class="start-btn" id="startBtn">
+                        <span class="start-text">Get started</span>
+                        <span class="arrow">→</span>
+                    </button>
+                </a>                
+            </div>
+            
+            <div class="abstract-design">
+                <div class="floating-shapes">
+                    <div class="shape shape-1"></div>
+                    <div class="shape shape-2"></div>
+                    <div class="shape shape-3"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeSettingsBtn">×</button>
+            <h2 class="modal-title settings-title">settings</h2>
+            
+            <div class="settings-option">
+                <h3 class="sign-in-title">account</h3>
+                <div class="sign-in-options">
+                    <div class="sign-in-option" id="signInBtn">
+                        <span class="sign-in-text">sign in</span>
+                    </div>
+                    <div class="sign-in-option" id="signUpBtn">
+                        <span class="sign-up-text">sign up</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="settings-option">
+                <h3 class="theme-title">theme</h3>
+                <div class="theme-toggle">
+                    <div class="theme-option active" data-theme="dark">
+                        <span class="dark-theme-text">dark</span>
+                    </div>
+                    <div class="theme-option" data-theme="light">
+                        <span class="light-theme-text">light</span>
+                    </div>
+                    <div class="theme-option" data-theme="blue">
+                        <span class="blue-theme-text">blue</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign Up Modal -->
+    <div class="modal" id="signUpModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeSignUpBtn">×</button>
+            <div class="back-btn" id="backToSettingsBtn">
+                <span>←</span> <span class="back-text">back to settings</span>
+            </div>
+            <h2 class="modal-title signup-title">create account</h2>
+            
+            <form id="signUpForm">
+                <div class="form-group">
+                    <label for="fullName" class="form-label">full name</label>
+                    <input type="text" id="fullName" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">email</label>
+                    <input type="email" id="email" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">password</label>
+                    <input type="password" id="password" class="form-control" required minlength="8">
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword" class="form-label">confirm password</label>
+                    <input type="password" id="confirmPassword" class="form-control" required minlength="8">
+                </div>
+                
+                <button type="submit" class="btn create-account-btn">create account</button>
+            </form>
+            
+            <div class="form-footer">
+                <span class="already-account-text">already have an account?</span> <a href="#" id="goToSignInBtn" class="form-link">sign in</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign In Modal -->
+    <div class="modal" id="signInModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeSignInBtn">×</button>
+            <div class="back-btn" id="backFromSignInBtn">
+                <span>←</span> <span class="back-text">back to settings</span>
+            </div>
+            <h2 class="modal-title signin-title">sign in</h2>
+            
+            <form id="signInForm">
+                <div class="form-group">
+                    <label for="signInEmail" class="form-label">email</label>
+                    <input type="email" id="signInEmail" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="signInPassword" class="form-label">password</label>
+                    <input type="password" id="signInPassword" class="form-control" required minlength="8">
+                </div>
+                
+                <button type="submit" class="btn sign-in-btn">sign in</button>
+            </form>
+            
+            <div class="form-footer">
+                <span class="no-account-text">don't have an account?</span> <a href="#" id="goToSignUpBtn" class="form-link">sign up</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification System -->
+    <div class="notification" id="notification">
+        <span class="notification-icon" id="notificationIcon">✓</span>
+        <span class="notification-message" id="notificationMessage"></span>
+    </div>
+    <script src="homepage.js"></script>
+</body>
+</html>

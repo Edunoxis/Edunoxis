@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Speed Challenge</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Color System */
+            --primary-dark: #0a0a0a;
+            --primary-light: #f8f9fa;
+            --text-dark: #ffffff;
+            --text-light: #212529;
+            --accent-primary: #8a2be2; /* Purple */
+            --accent-secondary: #00bfff; /* Blue */
+            --accent-tertiary: #ffd700; /* Gold */
+            --success: #4BB543;
+            --error: #FF3333;
+            
+            /* Current Theme - Dark by default */
+            --primary-color: var(--primary-dark);
+            --text-color: var(--text-dark);
+            --accent-color: var(--accent-primary);
+            --card-bg: #1a1a1a;
+            --nav-bg: rgba(10, 10, 10, 0.8);
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header and Navigation */
+        .header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            color: var(--accent-color);
+        }
+
+        .logo sup {
+            font-size: 1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            opacity: 1;
+            color: var(--accent-color);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 5rem 2rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+        }
+
+        .title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            line-height: 1.2;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            text-align: center;
+            background: linear-gradient(90deg, var(--text-color), var(--accent-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: gradientShift 8s infinite alternate;
+            background-size: 200% auto;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* Game Container */
+        .game-container {
+            position: relative;
+            width: 640px;
+            max-width: 90%;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* Screen styling */
+        .screen {
+            padding: 30px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Start Screen */
+        #start-screen h1 {
+            color: var(--accent-tertiary);
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+        }
+
+        #start-screen p {
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+        }
+
+        .instructions {
+            background-color: rgba(138, 43, 226, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            text-align: left;
+            border-left: 3px solid var(--accent-primary);
+        }
+
+        .instructions h3 {
+            margin-bottom: 10px;
+            color: var(--accent-primary);
+        }
+
+        .instructions ul {
+            list-style-position: inside;
+            margin-left: 5px;
+        }
+
+        .instructions li {
+            margin: 5px 0;
+            line-height: 1.4;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .difficulty {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .difficulty-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            border: 2px solid transparent;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .difficulty-btn:hover {
+            background-color: rgba(138, 43, 226, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .difficulty-btn.active {
+            background-color: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 15px rgba(138, 43, 226, 0.5);
+        }
+
+        /* Buttons */
+        button {
+            background-color: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s;
+            z-index: -1;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        #start-button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: var(--accent-tertiary);
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+        #start-button:hover {
+            background-color: #f9ce00;
+        }
+
+        /* Game Screen */
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--accent-secondary);
+        }
+
+        #score {
+            color: var(--accent-tertiary);
+        }
+
+        #word-display {
+            font-size: 42px;
+            margin: 40px 0;
+            min-height: 60px;
+            color: var(--accent-tertiary);
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        #word-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        #word-input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+        }
+
+        /* Feedback message */
+        #feedback {
+            margin-top: 15px;
+            padding: 8px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .correct {
+            background-color: rgba(75, 181, 67, 0.2);
+            color: var(--success);
+        }
+
+        .fast {
+            background-color: rgba(255, 215, 0, 0.2);
+            color: var(--accent-tertiary);
+        }
+
+        /* Timer colors */
+        .timer-warning {
+            color: var(--error);
+            font-weight: bold;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        /* End Screen */
+        #end-screen h1 {
+            color: var(--accent-tertiary);
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+        }
+
+        .stats {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+            text-align: left;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-left: 3px solid var(--accent-secondary);
+        }
+
+        .stats p {
+            margin: 12px 0;
+            font-size: 18px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .stats span {
+            font-weight: bold;
+            color: var(--accent-secondary);
+        }
+
+        #high-score {
+            color: var(--accent-tertiary);
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        #retry-button {
+            background-color: var(--accent-tertiary);
+            color: var(--primary-dark);
+        }
+
+        #retry-button:hover {
+            background-color: #f9ce00;
+        }
+
+        /* Glow Effect for Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 60% 50%, rgba(138, 43, 226, 0.3), transparent 70%);
+            z-index: -1;
+            filter: blur(40px);
+            animation: pulse 8s infinite alternate;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 1rem 2rem;
+            }
+            
+            .nav-links {
+                gap: 1.5rem;
+            }
+            
+            .game-container {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .main-content {
+                padding: 4rem 1rem 1rem;
+            }
+            
+            .screen {
+                padding: 20px;
+            }
+            
+            .title {
+                font-size: 1.8rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .difficulty {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .difficulty-btn {
+                width: 80%;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            button {
+                width: 100%;
+            }
+
+            #word-display {
+                font-size: 32px;
+                margin: 30px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="homepage.html" class="logo">Em<sup>2</sup></a>
+            <div class="nav-links">
+                <a href="homepage.html" class="nav-link">Home</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+                <a href="game.html" class="nav-link">Game</a>
+                <a href="donate.html" class="nav-link">Donate</a>
+            </div>
+        </nav>
+    </header>
+    
+    <main class="main-content">
+        <div class="game-container">
+            <!-- Start Screen -->
+            <div id="start-screen" class="screen">
+                <p>Test your typing speed and accuracy!</p>
+                <div class="instructions">
+                    <h3>How to Play:</h3>
+                    <ul>
+                        <li>Type the displayed word correctly</li>
+                        <li>Score +1 point for each correct word</li>
+                        <li>Get a +1 bonus point for typing in under 2 seconds</li>
+                        <li>Try to get as many words as possible before time runs out</li>
+                    </ul>
+                </div>
+                <div class="difficulty">
+                    <button id="easy-btn" class="difficulty-btn">Easy (90s)</button>
+                    <button id="medium-btn" class="difficulty-btn active">Medium (60s)</button>
+                    <button id="hard-btn" class="difficulty-btn">Hard (30s)</button>
+                </div>
+                <button id="start-button">Start Typing</button>
+            </div>
+
+            <!-- Game Screen -->
+            <div id="game-screen" class="screen hidden">
+                <div class="game-header">
+                    <div id="score">Score: 0</div>
+                    <div id="timer">Time: 60s</div>
+                </div>
+                <div id="word-display"></div>
+                <input type="text" id="word-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Type here...">
+                <div id="feedback" class="hidden"></div>
+            </div>
+
+            <!-- End Screen -->
+            <div id="end-screen" class="screen hidden">
+                <h1>Game Over!</h1>
+                <div class="stats">
+                    <p>Words Typed: <span id="words-typed">0</span></p>
+                    <p>Correct Words: <span id="correct-words">0</span></p>
+                    <p>Accuracy: <span id="accuracy">0</span>%</p>
+                    <p>WPM: <span id="wpm">0</span></p>
+                    <p>High Score: <span id="high-score">0</span></p>
+                </div>
+                <div class="buttons">
+                    <button id="retry-button">Try Again</button>
+                    <button id="home-button">Home</button>
+                </div>
+            </div>
+        </div>
+    </main>
+  
+    <script>
+        // =====================================
+        // WORD LIST
+        // =====================================
+        
+        // Store a large list of common English words
+        const WORD_LIST = [
+          // Common English words
+          "the", "be", "to", "of", "and", "a", "in", "that", "have", "I", 
+          "it", "for", "not", "on", "with", "he", "as", "you", "do", "at",
+          "this", "but", "his", "by", "from", "they", "we", "say", "her", "she",
+          "or", "an", "will", "my", "one", "all", "would", "there", "their", "what",
+          "so", "up", "out", "if", "about", "who", "get", "which", "go", "me",
+          "when", "make", "can", "like", "time", "no", "just", "him", "know", "take",
+          "people", "into", "year", "your", "good", "some", "could", "them", "see", "other",
+          "than", "then", "now", "look", "only", "come", "its", "over", "think", "also",
+          "back", "after", "use", "two", "how", "our", "work", "first", "well", "way",
+          "even", "new", "want", "because", "any", "these", "give", "day", "most", "us",
+          
+          // Programming related words
+          "code", "function", "array", "object", "string", "number", "boolean", "null", 
+          "undefined", "variable", "const", "let", "var", "class", "interface", "type",
+          "javascript", "python", "java", "html", "css", "react", "vue", "angular",
+          "node", "express", "mongodb", "sql", "database", "api", "rest", "json",
+          "server", "client", "frontend", "backend", "fullstack", "developer", "programming",
+          "algorithm", "loop", "condition", "async", "await", "promise", "callback",
+          "git", "github", "repository", "commit", "push", "pull", "merge", "branch",
+          "component", "props", "state", "hook", "redux", "context", "effect", "render",
+          "syntax", "semantic", "compiler", "interpreter", "runtime", "browser", "debug",
+          "error", "exception", "try", "catch", "finally", "throw", "validation",
+          "schema", "model", "view", "controller", "framework", "library", "package",
+          "module", "import", "export", "default", "require", "dependency", "npm", "yarn",
+          "webpack", "babel", "typescript", "interface", "generic", "template", "parameter",
+          "argument", "closure", "scope", "hoisting", "prototype", "instance", "method",
+          "property", "attribute", "static", "dynamic", "virtual", "abstract", "concrete",
+          "encryption", "security", "authentication", "authorization", "middleware", "cookie",
+          "session", "token", "jwt", "oauth", "graphql", "rest", "soap", "http", "https",
+          "get", "post", "put", "delete", "patch", "request", "response", "header", "body",
+          "query", "param", "form", "data", "json", "xml", "yaml", "csv", "markdown"
+        ];
+
+        // Shuffle the array using Fisher-Yates algorithm
+        function shuffleArray(array) {
+          for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+          }
+          return array;
+        }
+
+        // Create a shuffled copy of the word list
+        let localWords = shuffleArray([...WORD_LIST]);
+
+        // Function to get a word (from local list or API)
+        async function getWord() {
+          if (localWords.length > 0) {
+            return localWords.pop(); // Get word from local list
+          } else {
+            try {
+              const res = await fetch("https://random-word-api.herokuapp.com/word");
+              const data = await res.json();
+              return data[0];
+            } catch (error) {
+              console.error("Error fetching word:", error);
+              // Fallback if API fails - recycle words from the original list
+              localWords = shuffleArray([...WORD_LIST]);
+              return localWords.pop();
+            }
+          }
+        }
+
+        // =====================================
+        // UI ELEMENTS
+        // =====================================
+        
+        // Get DOM elements
+        const startScreen = document.getElementById('start-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const endScreen = document.getElementById('end-screen');
+        const startButton = document.getElementById('start-button');
+        const retryButton = document.getElementById('retry-button');
+        const homeButton = document.getElementById('home-button');
+        const wordDisplay = document.getElementById('word-display');
+        const wordInput = document.getElementById('word-input');
+        const scoreElement = document.getElementById('score');
+        const timerElement = document.getElementById('timer');
+        const wordsTypedElement = document.getElementById('words-typed');
+        const correctWordsElement = document.getElementById('correct-words');
+        const accuracyElement = document.getElementById('accuracy');
+        const wpmElement = document.getElementById('wpm');
+        const highScoreElement = document.getElementById('high-score');
+        const feedbackElement = document.getElementById('feedback');
+        
+        // Difficulty buttons
+        const easyBtn = document.getElementById('easy-btn');
+        const mediumBtn = document.getElementById('medium-btn');
+        const hardBtn = document.getElementById('hard-btn');
+
+        // =====================================
+        // UI FUNCTIONS
+        // =====================================
+        
+        // Show a specific screen (hide others)
+        function showScreen(screen) {
+          startScreen.classList.add('hidden');
+          gameScreen.classList.add('hidden');
+          endScreen.classList.add('hidden');
+          
+          screen.classList.remove('hidden');
+          
+          // Focus on input when game screen is shown
+          if (screen === gameScreen) {
+            wordInput.focus();
+          }
+        }
+
+        // Update score display
+        function updateScore(score) {
+          scoreElement.textContent = `Score: ${score}`;
+        }
+
+        // Update timer display
+        function updateTimer(seconds) {
+          // Make timer red when less than 10 seconds
+          if (seconds <= 10) {
+            timerElement.classList.add('timer-warning');
+          } else {
+            timerElement.classList.remove('timer-warning');
+          }
+          
+          timerElement.textContent = `Time: ${seconds}s`;
+        }
+
+        // Display current word
+        function displayWord(word) {
+          wordDisplay.textContent = word;
+        }
+
+        // Clear input field
+        function clearInput() {
+          wordInput.value = '';
+        }
+
+        // Show feedback message
+        function showFeedback(message, className) {
+          feedbackElement.textContent = message;
+          feedbackElement.className = className;
+          feedbackElement.classList.remove('hidden');
+          
+          // Hide feedback after 1 second
+          setTimeout(() => {
+            feedbackElement.classList.add('hidden');
+          }, 1000);
+        }
+
+        // Show end game results
+        function showResults(wordsTyped, correctWords, gameTimeInSeconds) {
+          const accuracy = wordsTyped > 0 ? Math.floor((correctWords / wordsTyped) * 100) : 0;
+          const wpm = Math.floor((correctWords / (gameTimeInSeconds / 60)));
+          
+          wordsTypedElement.textContent = wordsTyped;
+          correctWordsElement.textContent = correctWords;
+          accuracyElement.textContent = accuracy;
+          wpmElement.textContent = wpm;
+          
+          // Get high score from localStorage
+          const highScore = localStorage.getItem('typingHighScore') || 0;
+          highScoreElement.textContent = Math.max(correctWords, highScore);
+          
+          // Update high score if current score is higher
+          if (correctWords > highScore) {
+            localStorage.setItem('typingHighScore', correctWords);
+          }
+        }
+
+        // =====================================
+        // GAME VARIABLES
+        // =====================================
+        
+        let currentWord = '';
+        let score = 0;
+        let wordsTyped = 0;
+        let correctWords = 0;
+        let timeLeft = 60; // Default game time in seconds
+        let gameTimeInSeconds = 60; // Store the total game time for calculating WPM
+        let timer;
+        let lastWordTime = 0;
+        
+        // =====================================
+        // GAME FUNCTIONS
+        // =====================================
+        
+        // Start the game
+        async function startGame() {
+          // Reset game variables
+          score = 0;
+          wordsTyped = 0;
+          correctWords = 0;
+          timeLeft = gameTimeInSeconds;
+          
+          // Reset UI
+          updateScore(score);
+          updateTimer(timeLeft);
+          
+          // Show game screen
+          showScreen(gameScreen);
+          
+          // Start game timer
+          timer = setInterval(() => {
+            timeLeft--;
+            updateTimer(timeLeft);
+            
+            if (timeLeft <= 0) {
+              endGame();
+            }
+          }, 1000);
+          
+          // Load first word
+          await loadNewWord();
+          
+          // Record start time for speed bonus
+          lastWordTime = Date.now();
+        }
+
+        // End the game
+        function endGame() {
+          // Clear timer
+          clearInterval(timer);
+          
+          // Show results screen
+          showResults(wordsTyped, correctWords, gameTimeInSeconds);
+          showScreen(endScreen);
+        }
+
+        // Load a new word
+        async function loadNewWord() {
+          currentWord = await getWord();
+          displayWord(currentWord);
+          clearInput();
+        }
+
+        // Check user input against current word
+        function checkInput() {
+          const userInput = wordInput.value.trim();
+          
+          // If user types the word correctly
+          if (userInput === currentWord) {
+            wordsTyped++;
+            correctWords++;
+            
+            // Check for speed bonus (if typed under 2 seconds)
+            const currentTime = Date.now();
+            const typingTime = (currentTime - lastWordTime) / 1000; // in seconds
+            
+            if (typingTime < 2) {
+              // Speed bonus
+              score += 2;
+              showFeedback("Fast! +2 points", "fast");
+            } else {
+              score++;
+              showFeedback("Correct! +1 point", "correct");
+            }
+            
+            updateScore(score);
+            
+            // Record time for next word
+            lastWordTime = currentTime;
+            
+            // Load next word
+            loadNewWord();
+          }
+        }
+        
+        // =====================================
+        // EVENT LISTENERS
+        // =====================================
+        
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+          // Set difficulty
+          easyBtn.addEventListener('click', () => {
+            easyBtn.classList.add('active');
+            mediumBtn.classList.remove('active');
+            hardBtn.classList.remove('active');
+            gameTimeInSeconds = 90;
+          });
+          
+          mediumBtn.addEventListener('click', () => {
+            easyBtn.classList.remove('active');
+            mediumBtn.classList.add('active');
+            hardBtn.classList.remove('active');
+            gameTimeInSeconds = 60;
+          });
+          
+          hardBtn.addEventListener('click', () => {
+            easyBtn.classList.remove('active');
+            mediumBtn.classList.remove('active');
+            hardBtn.classList.add('active');
+            gameTimeInSeconds = 30;
+          });
+          
+          // Start game button
+          startButton.addEventListener('click', startGame);
+          
+          // Retry button
+          retryButton.addEventListener('click', startGame);
+          
+          // Home button
+          homeButton.addEventListener('click', () => {
+            showScreen(startScreen);
+          });
+          
+          // Word input
+          wordInput.addEventListener('input', checkInput);
+          
+          // Show high score on load
+          const highScore = localStorage.getItem('typingHighScore') || 0;
+          highScoreElement.textContent = highScore;
+        });
+    </script>
+</body>
+</html>

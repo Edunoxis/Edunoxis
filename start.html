@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start-Edunoxis</title>
+    <link rel="stylesheet" href="select.css">
+    <link style="border: 50%;" rel="icon" type="image/png" sizes="64x64" href="Edumaster logo (without background) 1.png">
+    <link style="border: 50%;" rel="icon" type="image/png" sizes="32x32" href="Edumaster logo (without background) 1.png">
+    <link rel="apple-touch-icon" href="Edumaster logo (without background) 1.png">
+    <meta name="theme-color" content="#ffffff"> 
+</head>
+<body>
+    <header class="header">
+        <nav class="nav-container">
+            <a href="Edunoxis.html" class="logo">Em<sup>2</sup></a>
+            <div class="nav-links">
+                <a href="Edunoxis.html" class="nav-link">Home</a>
+                <a href="contact.html" class="nav-link">Contact</a>
+                <a href="game.html" class="nav-link">Game</a>
+                <a href="donate.html" class="nav-link">Donate</a>
+            </div>
+        </nav>
+    </header>
+    <main class="main-content">
+        <h1 class="title">Choose Your Learning Path</h1>
+        <div class="category-buttons">
+            <a href="prog.html" class="category-button">
+                <div class="category-icon">🖥️</div>
+                <h2 class="category-title">Programming Basics</h2>
+                <p class="category-description">Learn programming, data structures, and algorithms.</p>
+            </a>
+            <a href="modtech.html" class="category-button">
+                <div class="category-icon">⚙️</div>
+                <h2 class="category-title">Modern Technologies</h2>
+                <p class="category-description">Explore AI, machine learning, and web development.</p>
+            </a>
+            <a href="data.html" class="category-button">
+                <div class="category-icon">🌐</div>
+                <h2 class="category-title">Data & Networking</h2>
+                <p class="category-description">Study networking, databases, data science, cloud computing.</p>
+            </a>
+        </div>
+    </main>
+    <script>
+        // ===== Theme Management =====
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('em2_theme') || 'dark';
+            document.body.className = savedTheme + '-theme';
+        }
+
+        // Initialize the theme when page loads
+        window.addEventListener('DOMContentLoaded', loadTheme);
+    </script>
+</body>
+</html>
