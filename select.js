@@ -1,47 +1,27 @@
-// Theme Management Function
-function loadTheme() {
-    const savedTheme = localStorage.getItem('em2_theme') || 'dark';
-    document.body.className = savedTheme + '-theme';
-    
-    document.querySelectorAll('.theme-option').forEach(option => {
-        option.classList.toggle('active', option.dataset.theme === savedTheme);
+// Theme Switcher Logic
+document.addEventListener("DOMContentLoaded", () => {
+  const themeButtons = document.querySelectorAll("[data-theme]");
+
+  themeButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      const selectedTheme = button.getAttribute("data-theme");
+      
+      // Remove all theme classes
+      document.body.classList.remove("light-theme", "blue-theme");
+      
+      // Add the selected theme class if it's not default (dark)
+      if (selectedTheme !== "dark") {
+        document.body.classList.add(`${selectedTheme}-theme`);
+      }
+
+      // Optional: save preference to localStorage
+      localStorage.setItem("theme", selectedTheme);
     });
-}
+  });
 
-function handleThemeChange(theme) {
-    // Remove all theme classes
-    document.body.classList.remove('dark-theme', 'light-theme', 'blue-theme');
-    
-    // Add the selected theme class
-    document.body.classList.add(theme + '-theme');
-    
-    // Save to localStorage
-    localStorage.setItem('em2_theme', theme);
-}
-
-// Setup theme event listeners
-function setupThemeListeners() {
-    const themeOptions = document.querySelectorAll('.theme-option');
-    
-    themeOptions.forEach(option => {
-        option.addEventListener('click', () => {
-            themeOptions.forEach(opt => opt.classList.remove('active'));
-            option.classList.add('active');
-            handleThemeChange(option.dataset.theme);
-        });
-    });
-}
-
-// Initialize theme
-document.addEventListener('DOMContentLoaded', function() {
-    loadTheme();
-    setupThemeListeners();
-    
-    // Add scrolled class to header
-    const header = document.querySelector('.header');
-    if (header) {
-        window.addEventListener('scroll', () => {
-            header.classList.toggle('scrolled', window.scrollY > 50);
-        });
-    }
+  // Optional: load saved theme
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme && savedTheme !== "dark") {
+    document.body.classList.add(`${savedTheme}-theme`);
+  }
 });
