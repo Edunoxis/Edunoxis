@@ -7,3 +7,4 @@
 
         // Initialize the theme when page loads
         window.addEventListener('DOMContentLoaded', loadTheme);
+
